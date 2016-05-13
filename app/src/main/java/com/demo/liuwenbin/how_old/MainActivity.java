@@ -231,6 +231,15 @@ public class MainActivity extends Activity implements OnClickListener{
             case R.id.id_detect:
                 mWaitting.setVisibility(View.VISIBLE);
 
+                if (mCurrentPhotoSrc != null && !mCurrentPhotoSrc.trim().equals(""))
+                {
+                    resizePhoto();
+                }else
+                {
+                    mPhotoImg = BitmapFactory.decodeResource(getResources(),R.drawable.t4);
+                }
+
+
                 FaceppDetect.detect(mPhotoImg, new FaceppDetect.CallBack() {
 
                     @Override
