@@ -179,6 +179,20 @@ public class MainActivity extends Activity implements OnClickListener{
                 int age = face.getJSONObject("attribute").getJSONObject("age").getInt("value");
                 String gender = face.getJSONObject("attribute").getJSONObject("gender").getString("value");
 
+                //绘制年龄显示矩形框
+                Bitmap ageBitmap = buildAgeBitmap(age,"Male".equals(gender));
+
+                //对气泡进行缩放，跟随图片头像大小变动
+                int ageWidth = ageBitmap.getWidth();
+                int ageHeight = ageBitmap.getHeight();
+
+                if(bitmap.getWidth() < mPhoto.getWidth() && bitmap.getHeight() < mPhoto.getHeight())
+                {
+                    float ratio = Math.max(bitmap.getWidth() * 1.0f/mPhoto.getWidth(), bitmap.getHeight() * 1.0F/mPhoto.getHeight());
+                    ageBitmap = Bitmap.createScaledBitmap(ageBitmap, (int)(ageWidth * ratio),
+                            (int)(ageHeight * ratio), false);
+                }
+                canvas.drawBitmap(ageBitmap, x - ageBitmap.getWidth()/2, y - h/2 - ageBitmap.getHeight(), null);
                 mPhotoImg = bitmap;
 
             }
@@ -186,6 +200,23 @@ public class MainActivity extends Activity implements OnClickListener{
         {
             e.printStackTrace();
         }
+    }
+
+    private Bitmap buildAgeBitmap(int age, boolean isMale) {
+        TextView tv = (TextView)mWaitting.findViewById(R.id.id_age_and_gender);
+        tv.setText(age+"");
+        if(isMale)
+        {
+            tv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.male), null, null, null);
+        }else
+        {
+            tv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.female), null, null, null);
+        }
+        tv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(tv.getDrawingCache());
+        tv.destroyDrawingCache();
+
+        return bitmap;
     }
 
     public void onClick(View v){
