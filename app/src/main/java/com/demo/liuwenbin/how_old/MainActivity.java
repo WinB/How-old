@@ -175,7 +175,11 @@ public class MainActivity extends Activity implements OnClickListener{
                 //矩形框的右边
                 canvas.drawLine(x-w/2, y+h/2, x+w/2, y+h/2,mPaint);
 
-               mPhotoImg = bitmap;
+                //获取性别（gender）和年龄(age)
+                int age = face.getJSONObject("attribute").getJSONObject("age").getInt("value");
+                String gender = face.getJSONObject("attribute").getJSONObject("gender").getString("value");
+
+                mPhotoImg = bitmap;
 
             }
         } catch (JSONException e)
